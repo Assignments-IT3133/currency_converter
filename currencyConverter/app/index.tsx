@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text } from 'react-native';
-
-const CurrencyConverterApp = () => {
-    const [amount, setAmount] = useState<string>(''); // Specify type as string
-    const [fromCurrency, setFromCurrency] = useState<string>('USD');
-    const [toCurrency, setToCurrency] = useState<string>('EUR');
-    const [result, setResult] = useState<string | null>(null); // Allow result to be string or null
-
-    return (
-        <View>
-            <Text>Currency Converter</Text>
-        </View>
-    );
+const convertCurrency = async () => {
+    const API_URL = `https://api.exchangerate-api.com/v4/latest/${fromCurrency}`;
+    try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        const rate = data.rates[toCurrency];
+        const convertedAmount = (parseFloat(amount) * rate).toFixed(2); // Convert amount to number
+        setResult(convertedAmount);
+    } catch (error) {
+        console.error(error);
+    }
 };
-
-export default CurrencyConverterApp;
